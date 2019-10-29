@@ -20,6 +20,12 @@ return [
                     'mautic.helper.integration'
                 ]
             ],
+            'plugin.namesanitizer.lead.subscriber' => [
+                'class'     => \MauticPlugin\HostnetNameSanitizerBundle\EventListener\LeadSubscriber::class,
+                'arguments' => [
+                    'mautic.helper.integration'
+                ]
+            ]
         ],
         'integrations' => [
             'mautic.integration.HostnetNameSanitizer' => [
