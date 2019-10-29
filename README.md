@@ -33,5 +33,7 @@ Quando executado, o plugin irá pegar todos os nomes de contatos cadastrados no 
 
 Além do comando, também será adicionado um botão chamado “Limpar nomes” na tela da listagem de contatos. Ao clicar nele, o comando será executado em background e retornará uma notificação com a quantidade total de contatos alterados.
 
+Nas configurações do plugin há a opção de limpar o nome na inserção do contato. Se marcada como sim, o nome do contato será limpo no momento em que for inserido (seja inserção manual, via formulário ou por importação).
+
 ## Autor
 *  **Pedro de Jesus** - *pedro.jesus@hostnet.com.br*
