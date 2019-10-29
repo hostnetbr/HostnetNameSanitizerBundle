@@ -52,7 +52,7 @@ class HostnetNameSanitizerModel extends FormModel
     public function nameCase($name){
     
         //Evita caracteres estranhos no nome
-        $name = str_replace(str_split("'\/0123456789()*%$|~#?!^][}{;/\\<>,\""), '', $name;
+        $name = str_replace(str_split("'\/0123456789()*%$|~#?!^][}{;/\\<>,\""), '', $name);
             
         //Separadores e excessões de lower e uppercase
         $word_splitters = array(' ', '-', "O'", "L'", "D'", 'St.', 'Mc', 'Dr', 'Dra', 'Sr', 'Sra');
