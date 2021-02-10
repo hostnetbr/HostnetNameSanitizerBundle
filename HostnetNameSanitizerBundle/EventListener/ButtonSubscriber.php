@@ -10,13 +10,14 @@ namespace MauticPlugin\HostnetNameSanitizerBundle\EventListener;
 
 use Mautic\CoreBundle\CoreEvents;
 use Mautic\CoreBundle\Event\CustomButtonEvent;
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Mautic\CoreBundle\Templating\Helper\ButtonHelper;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\HostnetNameSanitizerBundle\Integration\HostnetNameSanitizerIntegration;
+use Symfony\Component\Routing\RouterInterface;
 
-class ButtonSubscriber extends CommonSubscriber
+class ButtonSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -26,9 +27,12 @@ class ButtonSubscriber extends CommonSubscriber
 
     private $event;
 
-    public function __construct(IntegrationHelper $integrationHelper)
+    private $router;
+
+    public function __construct(IntegrationHelper $integrationHelper, RouterInterface $router)
     {
         $this->integrationHelper = $integrationHelper;
+        $this->router = $router;
     }
 
     public static function getSubscribedEvents()

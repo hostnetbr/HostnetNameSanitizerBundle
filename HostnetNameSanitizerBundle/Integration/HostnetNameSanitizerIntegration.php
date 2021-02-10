@@ -13,6 +13,7 @@ use Mautic\PluginBundle\Entity\Integration;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use MauticPlugin\HostnetEmailValidatorBundle\Controller;
+use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 
 class HostnetNameSanitizerIntegration extends AbstractIntegration
 {
@@ -33,10 +34,10 @@ class HostnetNameSanitizerIntegration extends AbstractIntegration
 
     public function appendToForm(&$builder, $data, $formArea)
     {
-        if ($formArea === 'keys') {
+        if ($formArea === 'features') {
             $builder->add(
                 'insert_sanitize',
-                'yesno_button_group',
+                YesNoButtonGroupType::class,
                 [
                     'label' => 'Limpar nome na inserção do contato?',
                     'data' => (isset($data['insert_validation']) ? $data['insert_validation'] : false),

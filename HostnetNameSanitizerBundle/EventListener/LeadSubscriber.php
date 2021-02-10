@@ -4,22 +4,26 @@ namespace MauticPlugin\HostnetNameSanitizerBundle\EventListener;
 
 use Mautic\LeadBundle\Event\LeadEvent;
 use Mautic\LeadBundle\LeadEvents;
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Mautic\LeadBundle\Entity\LeadList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
+use MauticPlugin\HostnetNameSanitizerBundle\Model\HostnetNameSanitizerModel;
 
-class LeadSubscriber extends CommonSubscriber
+class LeadSubscriber implements EventSubscriberInterface
 {
 
     /**
      * @var IntegrationHelper
      */
-    protected $integrationHelper;
+    private $integrationHelper;
 
-    public function __construct(IntegrationHelper $integrationHelper)
+    private $pluginModel;
+
+    public function __construct(IntegrationHelper $integrationHelper, HostnetNameSanitizerModel $pluginModel)
     {
         $this->integrationHelper = $integrationHelper;
+        $this->pluginModel = $pluginModel;
     }
 
     public static function getSubscribedEvents()
@@ -37,9 +41,6 @@ class LeadSubscriber extends CommonSubscriber
             return;
         }
         
-        //Prepara o Model do plugin
-        $pluginModel = $this->factory->getModel('namesanitizer.model');
-        
         //Pega os dados do lead que está sendo inserido
         $id = $event->getLead()->getId();
         $firstname = $event->getLead()->getFirstname();
@@ -47,13 +48,13 @@ class LeadSubscriber extends CommonSubscriber
         $fullName = trim($firstname)." ".trim($lastname);      
          
         //Faz o tratamento do nome
-        $newFullName = $pluginModel->nameCase($fullName);
+        $newFullName = $this->pluginModel->nameCase($fullName);
         $newFirstname = trim(substr($newFullName, 0, strpos($newFullName, " ")));
         $newLastname = trim(substr($newFullName, strpos($newFullName, " ")));
 
         //Altera no banco o nome do lead inserido
         if($newFirstname != $firstname or $newLastname != $lastname){
-            $pluginModel->updateName($newFirstname, $newLastname, $id);
+            $this->pluginModel->updateName($newFirstname, $newLastname, $id);
         }      
 
         return;
