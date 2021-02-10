@@ -3,8 +3,8 @@ Um plugin do Mautic que faz uma correção e limpeza nos nomes dos contatos cada
 
 ### Requisitos
 
-- Mautic v2.15 ou superior;
-- PHP v7.0 ou superior.
+- Mautic v3.0 ou superior;
+- PHP v7.2 ou superior.
 
 ### Instalação
 
@@ -15,7 +15,7 @@ Copie a pasta **HostnetNameSanitizerBundle** para a pasta **plugins** na sua ins
 Limpe o cache rodando o seguinte comando na pasta raíz do seu Mautic:
 
 ```sh
-$ php app/console cache:clear
+$ php bin/console cache:clear
 ```
 Acessea página de plugins pelo painel do Mautic e clique no botão **Instalar/Atualizar plugins**. 
 
@@ -26,7 +26,7 @@ Procure na listagem de plugins por “Name Sanitizer”, clique nele e depois cl
 Após isso, será possível rodar o seguinte comando na na pasta raíz do seu Mautic:
 
 ```sh
-$ php app/console mautic:sanitize-names
+$ php bin/console mautic:sanitize-names
 ```
 
 Quando executado, o plugin irá pegar todos os nomes de contatos cadastrados no mautic e corrigi-los caso necessário. Após, ele irá retornar o número total de contatos que foram alterados.
@@ -36,4 +36,4 @@ Além do comando, também será adicionado um botão chamado “Limpar nomes” 
 Nas configurações do plugin há a opção de limpar o nome na inserção do contato. Se marcada como sim, o nome do contato será limpo no momento em que for inserido (seja inserção manual, via formulário ou por importação).
 
 ## Autor
-*  **Pedro de Jesus** - *pedro.jesus@hostnet.com.br*
+*  **Pedro de Jesus** - *pedro@hostnet.com.br*
