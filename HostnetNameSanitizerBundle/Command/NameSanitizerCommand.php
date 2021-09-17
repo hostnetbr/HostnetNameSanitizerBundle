@@ -39,6 +39,19 @@ class NameSanitizerCommand extends ModeratedCommand
         $altNames = 0;
         $output->writeln("<info>Limpando nomes...</info>");        
         foreach($names as $lead){
+            $trimmed_first = trim($lead['firstname']); 
+            $trimmed_last = trim($lead['lastname']);
+            $array_first = explode(" ",$trimmed_first);
+            $array_last = explode(" ",$trimmed_last);
+            $tamanho_last = sizeof($array_last);
+            $tamanho_first = sizeof($array_first);
+            for ($ii = $tamanho_last-1; $ii > -1; $ii-- ){
+                if ($array_last[$ii] == $array_first[$tamanho_first-1]){
+                    unset($array_first[$tamanho_first-1]);
+                    $tamanho_first--;
+                } 
+            }
+            $lead['firstname'] = implode(" ",$array_first);
             if(strpos(trim($lead['firstname']), trim($lead['lastname'])) !==false){
                 $fullName = trim($lead['firstname']);
             }else{
