@@ -39,8 +39,11 @@ class NameSanitizerCommand extends ModeratedCommand
         $altNames = 0;
         $output->writeln("<info>Limpando nomes...</info>");        
         foreach($names as $lead){
-            
-            $fullName = trim($lead['firstname'])." ".trim($lead['lastname']);       
+            if(strpos(trim($lead['firstname']), trim($lead['lastname'])) !==false){
+                $fullName = trim($lead['firstname']);
+            }else{
+                $fullName = trim($lead['firstname'])." ".trim($lead['lastname']);       
+            }
             $newFullName = $model->nameCase($fullName);
             $newFirstname = trim(substr($newFullName, 0, strpos($newFullName, " ")));
             $newLastname = trim(substr($newFullName, strpos($newFullName, " ")));
