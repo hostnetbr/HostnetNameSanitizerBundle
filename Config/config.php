@@ -1,6 +1,6 @@
 <?php
 return [
-    'name'        => 'Name Sanitizer',
+    'name'        => 'hostnetnamesanitizer',
     'description' => 'Name sanitizer for Mautic.',
     'version'     => '1.1.0',
     'author'      => 'Pedro de Jesus <pedro.jesus@hostnet.com.br>',
@@ -8,7 +8,7 @@ return [
         'main' => [
             'hostnet_sanitize_names' => [
                 'path'       => '/name_sanitizer',
-                'controller' => 'HostnetNameSanitizerBundle:HostnetNameSanitizer:sanitizeNames',
+                'controller' => 'MauticPlugin\HostnetNameSanitizerBundle\Controller\HostnetNameSanitizerController::sanitizeNamesAction',
             ]
         ]
     ],
@@ -25,44 +25,31 @@ return [
                 'class'     => \MauticPlugin\HostnetNameSanitizerBundle\EventListener\LeadSubscriber::class,
                 'arguments' => [
                     'mautic.helper.integration',
-                    'mautic.namesanitizer.model.model'
+                    'mautic.hostnetnamesanitizer.model.sanitizer'
                 ]
             ]
         ],
         'integrations' => [
-            'mautic.integration.HostnetNameSanitizer' => [
+            'mautic.integration.hostnetnamesanitizer' => [
                 'class'     => \MauticPlugin\HostnetNameSanitizerBundle\Integration\HostnetNameSanitizerIntegration::class,
-                'arguments' => [
-                    'event_dispatcher',
-                    'mautic.helper.cache_storage',
-                    'doctrine.orm.entity_manager',
-                    'session',
-                    'request_stack',
-                    'router',
-                    'translator',
-                    'logger',
-                    'mautic.helper.encryption',
-                    'mautic.lead.model.lead',
-                    'mautic.lead.model.company',
-                    'mautic.helper.paths',
-                    'mautic.core.model.notification',
-                    'mautic.lead.model.field',
-                    'mautic.plugin.model.integration_entity',
-                    'mautic.lead.model.dnc',
+                'tags'  => [
+                    'mautic.integration',
+                    'mautic.basic_integration',
                 ],
-            ]
+            ],
+            'hostnetnamesanitizer.integration.configuration' => [
+                'class'     => \MauticPlugin\HostnetNameSanitizerBundle\Integration\Support\ConfigSupport::class,
+                'tags'      => [
+                    'mautic.config_integration',
+                ],
+            ],
         ],
-        'models' => [
+        /* 'models' => [
             'mautic.namesanitizer.model.model' => [
                 'class' => \MauticPlugin\HostnetNameSanitizerBundle\Model\HostnetNameSanitizerModel::class,
                 'alias' => 'namesanitizer.model'
             ]
-        ],
-        'other' =>[
-            
-        ]
+        ], */
     ],
-    'menu' => [
-
-    ]
+    'menu' => []
 ];

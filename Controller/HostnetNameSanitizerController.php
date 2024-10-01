@@ -8,25 +8,18 @@
 
 namespace MauticPlugin\HostnetNameSanitizerBundle\Controller;
 
-use Mautic\CoreBundle\Controller\FormController;
+use Mautic\CoreBundle\Controller\CommonController;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class HostnetNameSanitizerController extends FormController
+class HostnetNameSanitizerController extends CommonController
 {
 
-    public function sanitizeNamesAction()
+    public function sanitizeNamesAction(KernelInterface $kernel)
     {   
 
-        return $this->processJob();
-
-    }
-
-    private function processJob()
-    {
-
-        $kernel = $this->get('kernel');
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
