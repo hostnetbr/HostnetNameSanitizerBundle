@@ -11,7 +11,8 @@ namespace MauticPlugin\HostnetNameSanitizerBundle\EventListener;
 use Mautic\CoreBundle\CoreEvents;
 use Mautic\CoreBundle\Event\CustomButtonEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Mautic\CoreBundle\Templating\Helper\ButtonHelper;
+#use Mautic\CoreBundle\Templating\Helper\ButtonHelper;
+use Mautic\CoreBundle\Twig\Helper\ButtonHelper;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\PluginBundle\Helper\IntegrationHelper;
 use MauticPlugin\HostnetNameSanitizerBundle\Integration\HostnetNameSanitizerIntegration;
@@ -24,8 +25,6 @@ class ButtonSubscriber implements EventSubscriberInterface
      * @var IntegrationHelper
      */
     protected $integrationHelper;
-
-    private $event;
 
     private $router;
 
@@ -69,7 +68,7 @@ class ButtonSubscriber implements EventSubscriberInterface
                 'primary' => false,
                 'priority'  => -1,
             ],
-            
+
             /* ButtonHelper::LOCATION_LIST_ACTIONS,
             'mautic_contact_index' */
 
@@ -80,5 +79,4 @@ class ButtonSubscriber implements EventSubscriberInterface
             ['mautic_contact_action', ['objectAction' => 'view']] */
         );
     }
-
 }

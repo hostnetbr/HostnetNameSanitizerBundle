@@ -18,12 +18,12 @@ class LeadSubscriber implements EventSubscriberInterface
      */
     private $integrationHelper;
 
-    private $pluginModel;
+    private $sanitizerModel;
 
-    public function __construct(IntegrationHelper $integrationHelper, HostnetNameSanitizerModel $pluginModel)
+    public function __construct(IntegrationHelper $integrationHelper, HostnetNameSanitizerModel $sanitizerModel)
     {
         $this->integrationHelper = $integrationHelper;
-        $this->pluginModel = $pluginModel;
+        $this->sanitizerModel = $sanitizerModel;
     }
 
     public static function getSubscribedEvents()
@@ -32,33 +32,32 @@ class LeadSubscriber implements EventSubscriberInterface
             LeadEvents::LEAD_POST_SAVE      => ['onLeadPostSave', 0],
         ];
     }
-    
+
     public function onLeadPostSave(LeadEvent $event)
-    {   
-        
+    {
+
         $integration = $this->integrationHelper->getIntegrationObject('HostnetNameSanitizer');
-        if (false === $integration || !$integration->getIntegrationSettings()->getIsPublished() || !$integration->getInsertSanitize()) {
+        $featureSettings = $integration->getIntegrationSettings()->getFeatureSettings()['integration'];
+        if (false === $integration || !$integration->getIntegrationSettings()->getIsPublished() || $featureSettings['insert_sanitize'] == 'no') {
             return;
         }
-        
+
         //Pega os dados do lead que está sendo inserido
         $id = $event->getLead()->getId();
         $firstname = $event->getLead()->getFirstname();
         $lastname = $event->getLead()->getLastname();
-        $fullName = trim($firstname)." ".trim($lastname);      
-         
+        $fullName = trim($firstname) . " " . trim($lastname);
+
         //Faz o tratamento do nome
-        $newFullName = $this->pluginModel->nameCase($fullName);
+        $newFullName = $this->sanitizerModel->nameCase($fullName);
         $newFirstname = trim(substr($newFullName, 0, strpos($newFullName, " ")));
         $newLastname = trim(substr($newFullName, strpos($newFullName, " ")));
 
         //Altera no banco o nome do lead inserido
-        if($newFirstname != $firstname or $newLastname != $lastname){
-            $this->pluginModel->updateName($newFirstname, $newLastname, $id);
-        }      
+        if ($newFirstname != $firstname or $newLastname != $lastname) {
+            $this->sanitizerModel->updateName($newFirstname, $newLastname, $id);
+        }
 
         return;
-
     }
-
 }
